@@ -26,11 +26,10 @@ def main():
     scope = 'Wall'
 
     try:
-        api = get_api(app_id, login, password, scope)
+        api = get_vk_api(app_id, login, password, scope)
     except vk.exceptions.VkAuthError:
         pass
         
-
 
 def parse_user_info(user_info_file):
     """
@@ -64,7 +63,9 @@ def check_user_info_file(file_name):
 
     return True
 
-def get_api(app_id, user_login, user_password, scope):
+def get_vk_api(app_id, user_login, user_password, scope):
+    """Return vk api."""
+
     while True:
         try:
             print("Try to connect to the vk.")
