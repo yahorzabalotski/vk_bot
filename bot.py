@@ -7,10 +7,13 @@ Main module.
 
 import json
 import os
+import vk
+import timeout
 
 def main():
     """Parse user info and start the bot."""
 
+    app_id = 5448459
     user_info = "user_info.txt"
 
     if not check_user_info_file(user_info):
@@ -19,6 +22,15 @@ def main():
     login, password = parse_user_info(user_info)
     if (login, password) == (None, None):
         return
+
+    scope = 'Wall'
+
+    try:
+        api = get_api(app_id, login, password, scope)
+    except vk.exceptions.VkAuthError:
+        pass
+        
+
 
 def parse_user_info(user_info_file):
     """
@@ -52,6 +64,20 @@ def check_user_info_file(file_name):
 
     return True
 
+def get_api(app_id, user_login, user_password, scope):
+    while True:
+        try:
+            print("Try to connect to the vk.")
+            return connect_to_vk(app_id, user_login, user_password, scope)
+        except timeout.TimeoutError:
+            continue
+
+@timeout.timeout(10)
+def connect_to_vk(app_id, user_login, user_password, scope):
+    """Return the vk api."""
+
+    session = vk.AuthSession(app_id, user_login, user_password, scope)
+    return vk.API(session)
 
 if __name__ == '__main__':
     main()
