@@ -106,3 +106,6 @@ Session.vim
 tags
 
 user_info.txt
+
+# ignore database files
+*.db
