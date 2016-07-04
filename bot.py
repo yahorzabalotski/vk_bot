@@ -10,6 +10,7 @@ import os
 import vk
 import timeout
 
+
 def main():
     """Parse user info and start the bot."""
 
@@ -29,7 +30,7 @@ def main():
         api = get_vk_api(app_id, login, password, scope)
     except vk.exceptions.VkAuthError:
         pass
-        
+
 
 def parse_user_info(user_info_file):
     """
@@ -50,6 +51,7 @@ def parse_user_info(user_info_file):
         print("Incorrect user info file format.")
         return (None, None)
 
+
 def check_user_info_file(file_name):
     """Return True if file exists and read permission is set, either False"""
 
@@ -63,6 +65,7 @@ def check_user_info_file(file_name):
 
     return True
 
+
 def get_vk_api(app_id, user_login, user_password, scope):
     """Return vk api."""
 
@@ -72,6 +75,7 @@ def get_vk_api(app_id, user_login, user_password, scope):
             return connect_to_vk(app_id, user_login, user_password, scope)
         except timeout.TimeoutError:
             continue
+
 
 @timeout.timeout(10)
 def connect_to_vk(app_id, user_login, user_password, scope):
