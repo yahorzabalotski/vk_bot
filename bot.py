@@ -17,7 +17,7 @@ def main():
     app_id = 5448459
     user_info = "user_info.txt"
 
-    if not check_user_info_file(user_info):
+    if not can_read_file(user_info):
         return
 
     login, password = parse_user_info(user_info)
@@ -52,15 +52,10 @@ def parse_user_info(user_info_file):
         return (None, None)
 
 
-def check_user_info_file(file_name):
+def can_read_file(file_name):
     """Return True if file exists and read permission is set, either False"""
 
-    if not os.path.isfile(file_name):
-        print("File", file_name, "doesn't exist.")
-        return False
-
-    if not os.access(file_name, os.R_OK):
-        print("Haven't permission to read", file_name)
+    if not os.path.isfile(file_name) or not os.access(file_name, os.R_OK):
         return False
 
     return True
