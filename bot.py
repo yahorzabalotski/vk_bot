@@ -25,11 +25,24 @@ def main():
         return
 
     scope = 'Wall'
+    lottery_group_names = ['*розыгр*', '*халяв*']
 
     try:
         api = get_vk_api(app_id, login, password, scope)
     except vk.exceptions.VkAuthError:
         pass
+
+
+def search_groups(api, names):
+    '''Search lottery groups.'''
+
+    res = []
+
+    for name in names:
+        res += [gr.get('gid', '-1') for gr in api.groups.search(q=name)[1:]
+                if not gr.get('is_closed', 0)]
+
+    return res
 
 
 def parse_user_info(user_info_file):
@@ -72,7 +85,7 @@ def get_vk_api(app_id, user_login, user_password, scope):
             continue
 
 
-@timeout.timeout(10)
+@timeout.timeout(20)
 def connect_to_vk(app_id, user_login, user_password, scope):
     """Return the vk api."""
 
